@@ -1,0 +1,69 @@
+****** Install Next.js ******
+
+>>npx create-next-app@latest
+
+I didn't use /src in installation time
+
+I install TailWind css
+
+
+If you want to install nativebase as wll that case you can follow this method>>  npx create-next-app -example https://github.com/GeekyAnts/nativebase-templates/tree/master/nextjs-with-native-base
+
+******** Run Next.js App ********
+
+for primary developer run app>>  npm run dev
+
+for compress and build >> npm run build
+and after build>> npm run start
+
+for template after download we have to install node_modules
+>>npm install
+
+****** Routing ******
+
+If in this project file there created a 'app' directory and if we create a folder and inside it and we create a page.js file 
+in this folder will autometically a route for this case we do not need to call the file name in directory like>> http://localhost:3000/customers
+
+OR 
+
+If in this project folder there create a 'pages' directory then inside this page directory we can create multiple folder then there we 
+can create various file, those all will be automatic route  for this case we need to call the file name in directory too like>> http://localhost:3000/customers/page
+
+
+**********  API Getting **********
+In next.js app if we want to get apis from backend like python FastAPI / Flask or node.js some somethings 
+then we have to create a .env file in nextjs app
+and add line>> NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
+
+
+Now in every page.js
+call the api>>
+
+const getCustomer = async () => {
+  // const data = await fetch('http://127.0.0.1:8000/customers');
+  const data = await fetch(process.env.NEXT_PUBLIC_API_URL + `/customers`);
+
+  if (!data.ok){
+    throw new Error('Could not data exist');
+  }
+  return data.json();
+};
+
+//and fetch data like below
+const CustomerList = async () => {
+  const customers = await getCustomer();
+
+  return (
+    <ul>
+        {customers.map((customer, index) =>(
+          <li key={index}>{customer.customer_name}</li>
+        ))}
+    </ul>
+  )
+};
+
+export default CustomerList;
+
+*********** Template Mastaring ***********
+
+for convert html to js >>https://transform.tools/html-to-jsx

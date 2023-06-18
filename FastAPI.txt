@@ -1,0 +1,110 @@
+                                                           
+https://www.youtube.com/watch?v=e4uzNaKVtCw&list=PL2rEES6BLcXFk68M20MANwBp7laTMfnuY&index=6
+
+for auth https://www.youtube.com/watch?v=lKk_hudmAfE
+
+							*********Fast API Instllation**********
+
+ *****Virtual Environment******
+Let's create virtual Environment
+**Let's setup Virtual Environment :
+>> py -3 -m venv venv
+
+Lets Activate the environment :
+>> venv\Scripts\activate
+If you want to deactivate the environment then 
+>>deactivate
+
+After Activate Environment then install FastAPI
+
+>>pip install fastapi
+
+
+for authentication need to instal 
+>>pip install PyJWT
+>>pip install passlib
+>>pip install email-validator
+>>pip install bcrypt
+
+
+
+			********** Run App **********
+run app>> uvicorn main:app --reload
+
+Default browser need to install it>> pip install python-multipart
+view>> http://127.0.0.1:8000/docs#/
+
+                  ****Database Connection*****
+
+For any sql database we can use sqlalchemy
+
+>>pip install sqlalchemy
+
+			****config.py file***
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+SQLALCHEMY_DATABASE_URL = "mysql://root@localhost/fastapi"
+
+engine=create_engine(SQLALCHEMY_DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
+
+			********Model.py*********
+from sqlalchemy import Column,String,Integer,Boolean
+from fastapi import FastAPI
+
+app = FastAPI()
+
+from config import engine, Base, SessionLocal
+
+class Service_time(Base):
+    __tablename__="Service_time"
+    id=Column(Integer,primary_key=True,index=True)
+    year = Column(Integer,unique=True,index=True)
+    service_details = Column(String(255),unique=True,index=True)
+
+Base.metadata.create_all(bind=engine)  //for create auto datatable
+
+
+			******** Routers  *******
+
+Generally main.py is the basic router
+but in big application we use differnt different router 
+Create a folder name routers and here we can create many router as we use
+
+for every single router we use impoet APIRouter from fastapi
+
+example customer_router.py>>
+
+from fastapi import APIRouter
+customer_router = APIRouter()
+
+@customer_router.get("/customers")
+async def customers():
+    return {"Message": "This is customers route"}
+
+And import in main.py>>
+
+from app.routers.customer_route import customer_router
+
+def include_router(app):
+    app.include_router(customer_router)
+
+def start_application():
+    app=FastAPI()
+    include_router(app)
+    return app
+
+app = start_application()
+
+
+
+************ For UI *************
+For data table
+I used Material-UI ( mui-datatables)
+>>npm i mui-datatables
+>>npm install @emotion/styled
+CDN>><link  rel="stylesheet"  href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
